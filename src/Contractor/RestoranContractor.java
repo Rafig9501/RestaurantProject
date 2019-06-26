@@ -6,23 +6,23 @@ public interface RestoranContractor {
 
     interface View {
 
-        int greetingOfGuests() throws IOException;
+        void greetingOfGuests() throws IOException;
 
         void showingMenu() throws IOException;
 
-        void showingBill();
+        void takingOrders() throws Exception;
 
-        void setRestoranPresenter();
+        void setView() throws Exception;
 
     }
 
     interface Presenter{
 
-        void checkingOrderWithMenu();
+        void sendingMenuDataFromModelToActivity();
 
-        void takingOrders();
+        int checkingOrderWithMenu(String order) throws IOException;
 
-        void givingBill();
+        void givingBill(int bill);
 
 
     }

@@ -10,30 +10,32 @@ public class ReservationActivity implements RestoranContractor.View {
 
     RestoranContractor.Presenter presenter;
 
-    void setView(){
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        new GuestServicePresenter(this);
+    public void setView() throws Exception {
+
+        presenter = new GuestServicePresenter(this);
+
+        greetingOfGuests();
+
+        showingMenu();
+
+        takingOrders();
 
     }
 
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         new ReservationActivity().setView();
 
     }
 
     @Override
-    public int greetingOfGuests() throws IOException {
+    public void greetingOfGuests() {
 
         System.out.println("Welcome to our restaurant!!!");
 
-        System.out.println("Please enter amount of the guests");
 
-        int numberOfGuests = Integer.parseInt(br.readLine());
-
-        return numberOfGuests;
 
     }
 
@@ -42,20 +44,33 @@ public class ReservationActivity implements RestoranContractor.View {
 
         System.out.println("Here is our menu, please take a look");
 
+        System.out.println();
 
+        presenter.sendingMenuDataFromModelToActivity();
+
+        System.out.println();
+
+        System.out.println("Please enter orders\n" +
+                "Whenever you finish your orders just write \"finish\"");
 
     }
 
-
     @Override
-    public void showingBill() {
+    public void takingOrders() throws Exception{
 
-    }
+        String order = br.readLine();
 
-    @Override
-    public void setRestoranPresenter() {
+            if (order.equals("finish")){
 
-        new GuestServicePresenter(this);
+                presenter.givingBill(new GuestServicePresenter(this).bill);
 
+            }
+            else {
+
+                new GuestServicePresenter(this).checkingOrderWithMenu(order);
+
+                takingOrders();
+
+            }
     }
 }
